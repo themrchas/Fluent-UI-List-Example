@@ -18,6 +18,14 @@ const ROWS_PER_PAGE = 2;
 //Although named MAX_ROW_HEIGHT, this should be MAX_COL_WIDTH
 const MAX_ROW_HEIGHT = 150;
 
+/*interface IState {
+  _columnCount: number,
+  _columnWidth: number,
+  _rowHeight: number 
+}*/
+
+
+//export const ColorList: React.FunctionComponent = () => {
 export class ColorList extends React.Component<IColorListProps,{}> {
 
         //These essentially act like instance fields in a class 
@@ -25,22 +33,39 @@ export class ColorList extends React.Component<IColorListProps,{}> {
        // private _columnWidth = useRef(0);
        // private _rowHeight = useRef(0);
 
+     //  state:IState = {_columnCount:0 , _columnWidth:0, _rowHeight:0};
+
+     
+
+     
+
+       
+
        private _columnCount: number;
   private _columnWidth: number;
   private _rowHeight: number;
-
   private _cellBorder = 0;
+  
+
+   
 
 
     
     public render(): React.ReactElement<IColorListProps> {
+
+       
+
+
         return(
 
             <div>
            
          {/*  <List items={this.props.colors} startIndex={2}  onRenderPage={this._onRenderPage} onPagesUpdated={this._onPagesUpdated}/> */ }
         {/* <List getItemCountForPage={this._getItemCountForPage}  getPageHeight={this._getPageHeight}   items={this.props.colors} startIndex={0}  onRenderPage={this._onRenderPage} onPagesUpdated={this._onPagesUpdated}/> */}
-        <List items={this.props.colors} startIndex={0}  getPageHeight={this._getPageHeight} getItemCountForPage={this._getItemCountForPage} onRenderCell={this._onRenderListCell}/>
+     {/*   Working <List items={this.props.colors} startIndex={0}  getPageHeight={this._getPageHeight} getItemCountForPage={this._getItemCountForPage} onRenderCell={this._onRenderListCell}/> */}
+      <List onPageAdded={this._onPageAdded} items={this.props.colors} startIndex={0}  getPageHeight={this._getPageHeight} getItemCountForPage={this._getItemCountForPage} onRenderCell={this._onRenderListCell}/>
+    {/* <List onRenderPage={this._onRenderPage} onPageAdded={this._onPageAdded} items={this.props.colors} startIndex={0}  getPageHeight={this._getPageHeight} getItemCountForPage={this._getItemCountForPage} /> */}
+  
             </div>
 
           /*  <ul>
@@ -87,14 +112,18 @@ export class ColorList extends React.Component<IColorListProps,{}> {
         const STANDARD_TILE_MARGIN: number = 4;
         const BOTTOM_MARGIN: number = 36;
 
-        const test = ['billy', 'bob'];
-
+       
 
         const {
             page,
             className: pageClassName,
             ...divProps
           } = pageProps;
+
+          console.log("_onRenderPage: page.key is", page.key);
+
+          if (page.key == 'page-0')
+            pageProps.page.isVisible = false;
 
           console.log('pageProps are',pageProps);
           console.log('page is ',page);
@@ -113,7 +142,7 @@ export class ColorList extends React.Component<IColorListProps,{}> {
                 marginLeft: STANDARD_TILE_MARGIN,
                 marginRight: STANDARD_TILE_MARGIN
               }}
-            >
+            > 
 
               
 {
@@ -165,4 +194,11 @@ items.map( (item: IColor,index:number): JSX.Element => {
         return this._rowHeight * ROWS_PER_PAGE;
       }
 
+      private _onPageAdded = (page:IPage<IColor>) => {
+          console.log("_onPageAdded: page style is", page);
+
+      }
+
 }
+
+
